@@ -6,6 +6,7 @@ import * as turf from "@turf/turf"
 export const SolutionsContext = createContext<{
     sols: FeatureCollection[],
     areaCalculation: (polygon1: Feature[]) => void,
+    addSolution: (solution: FeatureCollection) => void,
     area: { proposedSolution: number, value: number },
     selectedSolIndx: number,
     selectedSol: FeatureCollection,
@@ -13,6 +14,7 @@ export const SolutionsContext = createContext<{
     operation: (solIndx: number, featureIndex1: number, featureIndex2: number, opName: OperationType) => void
 }>({
     sols: INITIAL_SOLUTIONS,
+    addSolution: () => { },
     selectedSolIndx: 0,
     selectedSol: INITIAL_SOLUTIONS[0],
     setSelectedSolIndx: () => { },
@@ -69,15 +71,17 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     }
 
     const areaCalculation = (pol1: Feature[]) => {
-        debugger
         const areaCalculated = pol1.reduce((acc: number, feature: Feature) => {
             const area = turf.area(feature)
             return acc + area
         }, 0)
         setArea({ proposedSolution: selectedSolIndx, value: areaCalculated })
     }
+    const addSolution = (solution: FeatureCollection) => {
+        setSols(currentSol => [...currentSol, solution])
+    }
 
-    return <SolutionsContext.Provider value={{ sols: sols, areaCalculation: areaCalculation, area: area, operation: operation, setSelectedSolIndx, selectedSol, selectedSolIndx }}>
+    return <SolutionsContext.Provider value={{ sols: sols, areaCalculation: areaCalculation, area: area, operation: operation, setSelectedSolIndx, selectedSol, selectedSolIndx, addSolution: addSolution }}>
         {children}
     </SolutionsContext.Provider>
 }

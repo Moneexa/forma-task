@@ -1,4 +1,4 @@
-import { GOOGLE_MAP_API_KEY, OPERATION_BUTTONS, OperationType } from '../../../helper-functions/constants';
+import { OPERATION_BUTTONS, OperationType } from '../../../helper-functions/constants';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { Polygon } from './Polygon';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { SolutionsContext } from '../../../store/Solutions';
 import { convertToLatLng } from '../../../helper-functions/covertToLatLong';
 
+const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY || ""
 const center = {
     lng: 2.2919046878814697, lat: 48.85770582708133
 };

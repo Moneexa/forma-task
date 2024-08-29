@@ -10,5 +10,3 @@ export const INITIAL_SOLUTIONS: FeatureCollection[] = [
 export const OPERATION_BUTTONS = ["union", "intersection"] as const;
 
 export type OperationType = (typeof OPERATION_BUTTONS)[number];
-
-export const GOOGLE_MAP_API_KEY = "AIzaSyA2ShDbSbi2tCwmMaU9-PlygSGT-hnj7U4";
