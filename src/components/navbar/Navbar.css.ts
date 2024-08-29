@@ -1,6 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
 export const hero = style({
+  padding: "10px",
   backgroundColor: "black",
   color: "#f34040",
   display: "flex",
@@ -9,6 +10,5 @@ export const hero = style({
 });
 
 export const imageUnderNav = style({
-  marginLeft: "10px",
   width: "50px",
 });
