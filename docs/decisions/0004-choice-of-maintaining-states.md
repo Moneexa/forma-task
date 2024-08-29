@@ -1,4 +1,4 @@
-# Choice of maintaining States
+# Choice of  State Maintenance
 
 * Status: proposed
 * Date: 2024-08-29
