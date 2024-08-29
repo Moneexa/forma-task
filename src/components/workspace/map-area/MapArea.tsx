@@ -15,18 +15,18 @@ const center = {
 
 export function MapArea() {
     const [selectedPolygons, setSelectedPolygons] = useState<Set<number>>(new Set([]));
-    const [selectedOperation, setSelectedOperation] = useState("")
+    const [selectedOperation, setSelectedOperation] = useState<OperationType | null>(null)
     const { operation, areaCalculation, selectedSol, selectedSolIndx, area } = useContext(SolutionsContext)
     const formattedPolygons = convertToGoogleMapFormat(selectedSol);
     useEffect(() => {
         if (area.proposedSolution !== selectedSolIndx) {
             setSelectedPolygons(new Set())
-            setSelectedOperation("")
+            setSelectedOperation(null)
         }
     }, [selectedSolIndx])
     const handlePolygonClick = (index: number) => {
         const updatedSet = new Set(selectedPolygons);
-        setSelectedOperation("")
+        setSelectedOperation(null)
         if (updatedSet.has(index)) {
             updatedSet.delete(index);
         } else {
@@ -75,7 +75,7 @@ export function MapArea() {
                             <Polygon
                                 key={index}
                                 paths={coordinates}
-                                fillColor={(selectedPolygons.has(index)) == true ? "blue" : "red"}
+                                fillColor={selectedPolygons.has(index) ? "blue" : "red"}
                                 fillOpacity={0.4}
                                 strokeColor={"black"}
                                 strokeOpacity={0.8}
