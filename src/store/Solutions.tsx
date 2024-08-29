@@ -64,7 +64,16 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
         setSols(currentSol => [...currentSol, solution])
     }
 
-    return <SolutionsContext.Provider value={{ sols: sols, areaCalculation: areaCalculation, area: area, operation: operation, setSelectedSolIndx, selectedSol, selectedSolIndx, addSolution: addSolution }}>
+    return <SolutionsContext.Provider value={{
+        sols,
+        areaCalculation,
+        area,
+        operation,
+        setSelectedSolIndx,
+        selectedSol,
+        selectedSolIndx,
+        addSolution
+    }}>
         {children}
     </SolutionsContext.Provider>
 }

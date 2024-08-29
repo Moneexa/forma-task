@@ -10,7 +10,12 @@ export default function SolutionsList() {
         {
             sols.map((_, index) => {
                 return <div id={`${index}`}
-                    className={`${resultStyle} ${selectedSolIndx === index ? resultStyleVariant.clicked : resultStyleVariant.default}`}
+                    className={`
+                        ${resultStyle} 
+                        ${selectedSolIndx === index
+                            ? resultStyleVariant.clicked
+                            : resultStyleVariant.default}`
+                    }
                     onClick={() =>
                         handleSolutionClick(index)
                     }>{"Geo Result" + index}</div>

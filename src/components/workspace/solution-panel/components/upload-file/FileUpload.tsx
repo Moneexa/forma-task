@@ -34,11 +34,11 @@ export default function FileUpload() {
         }
     };
     return (<div>
-        <button className={`${buttonStyle} ${buttonStyleVariant.default}`} onClick={handleFileUploadButtonClick}>
+        <button
+            className={`${buttonStyle} ${buttonStyleVariant.default}`}
+            onClick={handleFileUploadButtonClick}>
             + Upload A Solution
         </button>
-        <span>&#9888;</span>
-
         <input
             type="file"
             ref={fileInputRef}

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { buttonRow, containerStyle } from './MapArea.css';
 import { useContext } from 'react';
 import { SolutionsContext } from '../../../store/Solutions';
-import { convertToLatLng } from '../../../helpers/covertToLatLong';
+import { convertToGoogleMapFormat } from '../../../helpers/convertToGoogleMapFormat';
 import { buttonStyle, buttonStyleVariant } from '../Workspace.css';
 
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY || ""
@@ -17,7 +17,7 @@ export function MapArea() {
     const [selectedPolygons, setSelectedPolygons] = useState<Set<number>>(new Set([]));
     const [selectedOperation, setSelectedOperation] = useState("")
     const { operation, areaCalculation, selectedSol, selectedSolIndx, area } = useContext(SolutionsContext)
-    const formattedPolygons = convertToLatLng(selectedSol);
+    const formattedPolygons = convertToGoogleMapFormat(selectedSol);
     useEffect(() => {
         if (area.proposedSolution !== selectedSolIndx) {
             setSelectedPolygons(new Set())
@@ -49,7 +49,14 @@ export function MapArea() {
             <div className={buttonRow}>
                 {
                     OPERATION_BUTTONS.map((name) => {
-                        return <button disabled={selectedPolygons.size < 2 || selectedPolygons.size > 2} className={`${buttonStyle} ${selectedOperation === name ? buttonStyleVariant.clicked : buttonStyleVariant.default}`} onClick={() => handleButtonClick(name)}>
+                        return <button
+                            disabled={selectedPolygons.size !== 2}
+                            className={`
+                                ${buttonStyle}
+                                ${selectedOperation === name
+                                    ? buttonStyleVariant.clicked
+                                    : buttonStyleVariant.default}`
+                            } onClick={() => handleButtonClick(name)}>
                             {name}
                         </button>
                     })
