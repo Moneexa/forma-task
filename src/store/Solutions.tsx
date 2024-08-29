@@ -1,11 +1,11 @@
 import React, { createContext, useState } from "react";
-import { INITIAL_SOLUTIONS, OperationType } from "../helper-functions/constants";
+import { INITIAL_SOLUTIONS, OperationType } from "../helpers/constants";
 import { Feature, FeatureCollection } from "../types";
 import * as turf from "@turf/turf"
 
 export const SolutionsContext = createContext<{
     sols: FeatureCollection[],
-    areaCalculation: (polygon1: Feature[]) => void,
+    areaCalculation: (polygon: Feature[]) => void,
     addSolution: (solution: FeatureCollection) => void,
     area: { proposedSolution: number, value: number },
     selectedSolIndx: number,
@@ -70,11 +70,13 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
         setSols(newSolutions)
     }
 
-    const areaCalculation = (pol1: Feature[]) => {
-        const areaCalculated = pol1.reduce((acc: number, feature: Feature) => {
+    const areaCalculation = (polygon: Feature[]) => {
+        debugger
+        const areaCalculated = polygon.reduce((acc: number, feature: Feature) => {
             const area = turf.area(feature)
             return acc + area
         }, 0)
+        console.log(areaCalculated)
         setArea({ proposedSolution: selectedSolIndx, value: areaCalculated })
     }
     const addSolution = (solution: FeatureCollection) => {
