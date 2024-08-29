@@ -26,7 +26,6 @@ export function MapArea() {
     }, [selectedSolIndx])
     const handlePolygonClick = (index: number) => {
         const updatedSet = new Set(selectedPolygons);
-        debugger
         setSelectedOperation("")
         if (updatedSet.has(index)) {
             updatedSet.delete(index);
@@ -34,7 +33,6 @@ export function MapArea() {
             updatedSet.add(index);
         }
         setSelectedPolygons(updatedSet);
-        debugger;
         areaCalculation(selectedSol.features.filter((_, index) => updatedSet.has(index)))
 
     };

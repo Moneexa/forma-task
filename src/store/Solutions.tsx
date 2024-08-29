@@ -29,7 +29,6 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     const selectedSol = sols[selectedSolIndx]
 
     const operation = (solIndx: number, featureIndex1: number, featureIndex2: number, opName: OperationType) => {
-        debugger
         const newSolutions = structuredClone(sols)
         const chosenSol = newSolutions[solIndx]
         const pol1 = chosenSol.features[featureIndex1]
@@ -71,7 +70,6 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     }
 
     const areaCalculation = (polygon: Feature[]) => {
-        debugger
         const areaCalculated = polygon.reduce((acc: number, feature: Feature) => {
             const area = turf.area(feature)
             return acc + area
