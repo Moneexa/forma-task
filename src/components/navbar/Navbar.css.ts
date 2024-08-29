@@ -2,7 +2,10 @@ import { style } from "@vanilla-extract/css";
 
 export const hero = style({
   backgroundColor: "black",
-  color: "white",
+  color: "#f34040",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
 });
 
 export const imageUnderNav = style({

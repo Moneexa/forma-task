@@ -15,3 +15,17 @@ export type FeatureCollection = {
   type: "FeatureCollection";
   features: Feature[];
 };
+
+export type SchemaValidationMessage =
+  | {
+      status: "success";
+      data: FeatureCollection;
+    }
+  | {
+      status: "issue";
+      issueMessage: string;
+    }
+  | {
+      status: "error";
+      erroMessage: "Unexpected Error Occured";
+    };

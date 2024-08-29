@@ -5,6 +5,8 @@ import * as turf from "@turf/turf"
 
 export const SolutionsContext = createContext<{
     sols: FeatureCollection[],
+    errorMessage: string,
+    setErrorMessage: (msg: string) => void,
     areaCalculation: (polygon: Feature[]) => void,
     addSolution: (solution: FeatureCollection) => void,
     area: { proposedSolution: number, value: number },
@@ -14,6 +16,8 @@ export const SolutionsContext = createContext<{
     operation: (solIndx: number, featureIndex1: number, featureIndex2: number, opName: OperationType) => void
 }>({
     sols: INITIAL_SOLUTIONS,
+    errorMessage: "",
+    setErrorMessage: () => { },
     addSolution: () => { },
     selectedSolIndx: 0,
     selectedSol: INITIAL_SOLUTIONS[0],
@@ -24,6 +28,7 @@ export const SolutionsContext = createContext<{
 });
 export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) => {
     const [selectedSolIndx, setSelectedSolIndx] = useState(0)
+    const [errorMessage, setErrorMessage] = useState("")
     const [sols, setSols] = useState(INITIAL_SOLUTIONS)
     const [area, setArea] = useState({ proposedSolution: selectedSolIndx, value: 0 })
     const selectedSol = sols[selectedSolIndx]
@@ -34,7 +39,7 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
         const pol1 = chosenSol.features[featureIndex1]
         const pol2 = chosenSol.features[featureIndex2]
 
-        const pol3 = opName == "union" ? turf.union({
+        const pol3 = opName === "union" ? turf.union({
             type: "FeatureCollection",
             features: [pol1, pol2]
         }) : turf.intersect({
@@ -67,6 +72,8 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     return <SolutionsContext.Provider value={{
         sols,
         areaCalculation,
+        setErrorMessage,
+        errorMessage,
         area,
         operation,
         setSelectedSolIndx,

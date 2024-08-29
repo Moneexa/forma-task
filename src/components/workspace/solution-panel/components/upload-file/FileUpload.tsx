@@ -1,12 +1,12 @@
 import { useContext, useRef } from "react"
 import { SolutionsContext } from "../../../../../store/Solutions";
-import { FeatureCollection } from "../../../../../types";
 import { buttonStyle, buttonStyleVariant } from "../../../Workspace.css";
+import { validateSchema } from "../../../../../helpers/validate-schema";
 
 
 export default function FileUpload() {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const { addSolution } = useContext(SolutionsContext)
+    const { addSolution, setErrorMessage } = useContext(SolutionsContext)
 
     const handleFileUploadButtonClick = () => {
         if (fileInputRef.current) {
@@ -15,18 +15,20 @@ export default function FileUpload() {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setErrorMessage("")
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const content = e.target?.result;
                 if (typeof content === 'string') {
-                    try {
-                        const jsonContent: FeatureCollection = JSON.parse(content);
-                        addSolution(jsonContent);
-
-                    } catch (error) {
-                        alert('Error parsing JSON:' + error);
+                    const response = validateSchema(content)
+                    if (response.status === "success") {
+                        addSolution(response.data);
+                    } else if (response.status === "issue") {
+                        setErrorMessage(response.issueMessage)
+                    } else {
+                        setErrorMessage(response.erroMessage)
                     }
                 }
             };
