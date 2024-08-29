@@ -33,29 +33,13 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
         const chosenSol = newSolutions[solIndx]
         const pol1 = chosenSol.features[featureIndex1]
         const pol2 = chosenSol.features[featureIndex2]
-        const geoJsonPol1: Feature = {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-                type: 'Polygon',
-                coordinates: pol1.geometry.coordinates
-            }
-        };
-        const geoJsonPol2: Feature = {
-            type: 'Feature',
-            properties: {},
 
-            geometry: {
-                type: 'Polygon',
-                coordinates: pol2.geometry.coordinates
-            }
-        };
         const pol3 = opName == "union" ? turf.union({
             type: "FeatureCollection",
-            features: [geoJsonPol1, geoJsonPol2]
+            features: [pol1, pol2]
         }) : turf.intersect({
             type: "FeatureCollection",
-            features: [geoJsonPol1, geoJsonPol2]
+            features: [pol1, pol2]
         })
         if (pol3?.geometry.type === "MultiPolygon") {
             return
@@ -74,7 +58,6 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
             const area = turf.area(feature)
             return acc + area
         }, 0)
-        console.log(areaCalculated)
         setArea({ proposedSolution: selectedSolIndx, value: areaCalculated })
     }
     const addSolution = (solution: FeatureCollection) => {

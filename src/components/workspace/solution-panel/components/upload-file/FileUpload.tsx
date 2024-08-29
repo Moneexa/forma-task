@@ -24,6 +24,7 @@ export default function FileUpload() {
                     try {
                         const jsonContent: FeatureCollection = JSON.parse(content);
                         addSolution(jsonContent);
+
                     } catch (error) {
                         alert('Error parsing JSON:' + error);
                     }
@@ -36,6 +37,8 @@ export default function FileUpload() {
         <button className={`${buttonStyle} ${buttonStyleVariant.default}`} onClick={handleFileUploadButtonClick}>
             + Upload A Solution
         </button>
+        <span>&#9888;</span>
+
         <input
             type="file"
             ref={fileInputRef}
