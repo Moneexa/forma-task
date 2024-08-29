@@ -20,7 +20,6 @@ We want to decide which tool to use for styling components in our app.
 * Tailwind/Bootstrap
 * styled components
 * vanilla extract js
-* modular css
 
 ## Decision Outcome
 
@@ -43,7 +42,3 @@ styled components are css based components.
 ### vanilla extract js
 
 * Good, because it does not have any runtime. Moreover it improves code readability by making  the classnames visible to the components. There is a least chance that developer will provide wrong classnames since it improves intellisense.
-
-### modular css
-
-* Bad, because There is a chance of giving wrong classnames to the components since developer will have to remember which classnames are for which component. Since it does not provide intellisense based suggestions, therefore writing error full code is more possible.
