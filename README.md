@@ -1,50 +1,39 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to get the project running.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installing the project
+- git clone the project by doing `git clone https://github.com/Moneexa/forma-task.git`
+- go inside the project folder and do `cd forma-task`.
+- do `npm install` inside the project folder.
+- make sure to create a `.env` file in the root of the project directory.
+- in addition make sure to have your google map api key.
+- place that key as `VITE_GOOGLE_MAP_API_KEY=your_key` in the .env file
+- run `npm run dev` inside your project.
+- and enjoy.
 
-## Expanding the ESLint configuration
+## Document Screenshots
+Here you will find how the project looks like as an overview
+### Project Starting Page
+![image](https://github.com/user-attachments/assets/e24ec701-2be7-4393-a0c4-a7cfeb51f52c)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Adding Geo Result inside Solution Panel
+![image](https://github.com/user-attachments/assets/86ef008a-580b-46bd-984d-3d4b739b7bec)
 
-- Configure the top-level `parserOptions` property like this:
+### Get Total Area of selected polygons
+![image](https://github.com/user-attachments/assets/0aac4730-5fb8-4fe6-a2c9-7940484171f2)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Get union of selected polygons
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+![image](https://github.com/user-attachments/assets/fab98b78-8de5-4468-beee-daa348474550)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+### Get intersection of selected polygons
+![image](https://github.com/user-attachments/assets/b546dc91-b4a6-40da-a00a-ff1d30d259cc)
+
+
+### Get Error Message when uploading wrong json file
+
+![image](https://github.com/user-attachments/assets/22224b88-47b6-470c-a5b9-acf9ce2cc778)
