@@ -5,7 +5,7 @@ This template provides a minimal setup to get the project running.
 
 ## Installing the project
 - git clone the project by doing `git clone https://github.com/Moneexa/forma-task.git`
-- go inside the project folder and do `cd forma-task`.
+- go inside the project folder by doing `cd forma-task`.
 - do `npm install` inside the project folder.
 - make sure to create a `.env` file in the root of the project directory.
 - in addition make sure to have your google map api key.
