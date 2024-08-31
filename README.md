@@ -1,7 +1,5 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get the project running.
-
+# Forma Task
+The project allows you to open the geo results in the form of GeoJSON, and perform union and intersections on them. In addition, the area covered by the selected polygons(shapes representing geojson) is also calculated with this app.
 
 ## Installing the project
 - git clone the project by doing `git clone https://github.com/Moneexa/forma-task.git`
