@@ -17,7 +17,6 @@ export const validateSchema = (jsonData: string): SchemaValidationMessage => {
     type: z.literal("FeatureCollection"),
     features: z.array(FeatureSchema),
   });
-  debugger;
 
   try {
     const parsedSchema = FeatureCollectionSchema.parse(JSON.parse(jsonData));
