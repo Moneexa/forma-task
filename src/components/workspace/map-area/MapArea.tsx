@@ -14,34 +14,34 @@ const center = {
 };
 
 export function MapArea() {
-    const [selectedPolygons, setSelectedPolygons] = useState<Set<number>>(new Set([]));
+    const [selectedPolygons, setSelectedPolygons] = useState<number[]>([]);
     const [selectedOperation, setSelectedOperation] = useState<OperationType | null>(null)
-    const { operation, areaCalculation, selectedSol, selectedSolIndx, area } = useContext(SolutionsContext)
+    const { operation, areaCalculation, selectedSolIndx, area, sols } = useContext(SolutionsContext)
+    const selectedSol = sols[selectedSolIndx]
     const formattedPolygons = convertToGoogleMapFormat(selectedSol);
     useEffect(() => {
         if (area.proposedSolution !== selectedSolIndx) {
-            setSelectedPolygons(new Set())
+            setSelectedPolygons([])
             setSelectedOperation(null)
         }
     }, [selectedSolIndx])
     const handlePolygonClick = (index: number) => {
-        const updatedSet = new Set(selectedPolygons);
+        const updatedSet = structuredClone(selectedPolygons);
         setSelectedOperation(null)
-        if (updatedSet.has(index)) {
-            updatedSet.delete(index);
+        if (updatedSet.includes(index)) {
+            updatedSet.filter(val => val != index);
         } else {
-            updatedSet.add(index);
+            updatedSet.push(index);
         }
         setSelectedPolygons(updatedSet);
-        areaCalculation(selectedSol.features.filter((_, index) => updatedSet.has(index)))
+        areaCalculation(updatedSet)
 
     };
 
     const handleButtonClick = (name: OperationType) => {
-        const [polygon1, polygon2] = selectedPolygons
         setSelectedOperation(name)
-        operation(selectedSolIndx, polygon1, polygon2, name)
-        setSelectedPolygons(new Set())
+        operation(selectedPolygons, name)
+        setSelectedPolygons([])
     }
 
     return (
@@ -50,7 +50,7 @@ export function MapArea() {
                 {
                     OPERATION_BUTTONS.map((name) => {
                         return <button
-                            disabled={selectedPolygons.size !== 2}
+                            disabled={selectedPolygons.length !== 2}
                             className={`
                                 ${buttonStyle}
                                 ${selectedOperation === name
@@ -75,7 +75,7 @@ export function MapArea() {
                             <Polygon
                                 key={index}
                                 paths={coordinates}
-                                fillColor={selectedPolygons.has(index) ? "blue" : "red"}
+                                fillColor={selectedPolygons?.includes(index) ? "blue" : "red"}
                                 fillOpacity={0.4}
                                 strokeColor={"black"}
                                 strokeOpacity={0.8}

@@ -6,7 +6,7 @@ import { validateSchema } from "../../../../../helpers/validate-schema";
 
 export default function FileUpload() {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const { addSolution, setErrorMessage } = useContext(SolutionsContext)
+    const { addSolution, updateErrorMessage } = useContext(SolutionsContext)
 
     const handleFileUploadButtonClick = () => {
         if (fileInputRef.current) {
@@ -15,7 +15,7 @@ export default function FileUpload() {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setErrorMessage("")
+        updateErrorMessage("")
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
@@ -26,9 +26,9 @@ export default function FileUpload() {
                     if (response.status === "success") {
                         addSolution(response.data);
                     } else if (response.status === "issue") {
-                        setErrorMessage(response.issueMessage)
+                        updateErrorMessage(response.issueMessage)
                     } else {
-                        setErrorMessage(response.erroMessage)
+                        updateErrorMessage(response.erroMessage)
                     }
                 }
             };

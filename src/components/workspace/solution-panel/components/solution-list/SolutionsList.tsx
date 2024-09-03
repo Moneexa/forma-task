@@ -2,9 +2,9 @@ import { useContext } from "react"
 import { SolutionsContext } from "../../../../../store/Solutions"
 import { resultStyleVariant, resultStyle } from "./SolutionsList.css"
 export default function SolutionsList() {
-    const { sols, setSelectedSolIndx, selectedSolIndx } = useContext(SolutionsContext)
+    const { sols, updateSolIndx, selectedSolIndx } = useContext(SolutionsContext)
     const handleSolutionClick = (index: number) => {
-        setSelectedSolIndx(index)
+        updateSolIndx(index)
     }
     return (<div>
         {

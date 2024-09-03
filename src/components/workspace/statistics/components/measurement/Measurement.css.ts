@@ -1,6 +1,8 @@
 import { style } from "@vanilla-extract/css";
 
 export const card = style({
+  margin: "5px",
+
   padding: "10px",
   backgroundColor: "#e0e0ff",
   color: "darkblue",

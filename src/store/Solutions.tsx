@@ -5,23 +5,21 @@ import * as turf from "@turf/turf"
 
 export const SolutionsContext = createContext<{
     sols: FeatureCollection[],
-    errorMessage: string,
-    setErrorMessage: (msg: string) => void,
-    areaCalculation: (polygon: Feature[]) => void,
     addSolution: (solution: FeatureCollection) => void,
+    errorMessage: string,
+    updateErrorMessage: (msg: string) => void,
     area: { proposedSolution: number, value: number },
+    areaCalculation: (polygons: number[]) => void,
     selectedSolIndx: number,
-    selectedSol: FeatureCollection,
-    setSelectedSolIndx: (indx: number) => void,
-    operation: (solIndx: number, featureIndex1: number, featureIndex2: number, opName: OperationType) => void
+    updateSolIndx: (indx: number) => void,
+    operation: (featureIndexes: number[], opName: OperationType) => void
 }>({
     sols: INITIAL_SOLUTIONS,
     errorMessage: "",
-    setErrorMessage: () => { },
+    updateErrorMessage: () => { },
     addSolution: () => { },
     selectedSolIndx: 0,
-    selectedSol: INITIAL_SOLUTIONS[0],
-    setSelectedSolIndx: () => { },
+    updateSolIndx: () => { },
     areaCalculation: () => { },
     area: { proposedSolution: 0, value: 0 },
     operation: () => { }
@@ -31,34 +29,45 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     const [errorMessage, setErrorMessage] = useState("")
     const [sols, setSols] = useState(INITIAL_SOLUTIONS)
     const [area, setArea] = useState({ proposedSolution: selectedSolIndx, value: 0 })
-    const selectedSol = sols[selectedSolIndx]
 
-    const operation = (solIndx: number, featureIndex1: number, featureIndex2: number, opName: OperationType) => {
+    const updateSolIndx = (indx: number) => {
+        setSelectedSolIndx(indx)
+    }
+    const updateErrorMessage = (msg: string) => {
+        setErrorMessage(msg)
+    }
+    const getPolygonsOutOfIndex = (indexes: number[]) => {
         const newSolutions = structuredClone(sols)
-        const chosenSol = newSolutions[solIndx]
-        const pol1 = chosenSol.features[featureIndex1]
-        const pol2 = chosenSol.features[featureIndex2]
-
-        const pol3 = opName === "union" ? turf.union({
-            type: "FeatureCollection",
-            features: [pol1, pol2]
-        }) : turf.intersect({
-            type: "FeatureCollection",
-            features: [pol1, pol2]
+        const chosenSol = newSolutions[selectedSolIndx]
+        const polygonsToChange = indexes.map((index) => {
+            return chosenSol.features[index]
         })
-        if (pol3?.geometry.type === "MultiPolygon") {
+        chosenSol.features = polygonsToChange
+        return chosenSol
+    }
+    const operation = (featureIndexes: number[], opName: OperationType) => {
+        const polygonToChange = getPolygonsOutOfIndex(featureIndexes)
+        const pol3 = opName === "union" ? turf.union(polygonToChange) : turf.intersect(polygonToChange)
+        if (pol3?.geometry.type === "MultiPolygon" || !pol3) {
+            updateErrorMessage("wrong polygons selected")
             return
         }
-        const filteredFeatures = chosenSol.features.filter((_, indx) => (indx !== featureIndex1 && indx !== featureIndex2))
-        if (pol3 != null) {
-            filteredFeatures.push(pol3 as Feature)
-        }
+        const solution = structuredClone(sols)
+        const chosenSol = solution[selectedSolIndx]
+        const filteredFeatures = chosenSol.features.filter((feature, indx) => {
+            if (!featureIndexes.includes(indx)) {
+                return feature
+            }
+        })
+        filteredFeatures.push(pol3 as Feature)
         chosenSol.features = filteredFeatures
-        newSolutions[solIndx] = chosenSol
-        setSols(newSolutions)
+        solution[selectedSolIndx] = chosenSol
+        setSols(solution)
     }
 
-    const areaCalculation = (polygon: Feature[]) => {
+    const areaCalculation = (polygons: number[]) => {
+        const featureColl = getPolygonsOutOfIndex(polygons)
+        const polygon = featureColl.features
         const areaCalculated = polygon.reduce((acc: number, feature: Feature) => {
             const area = turf.area(feature)
             return acc + area
@@ -72,12 +81,11 @@ export const SolutionsProvider = ({ children }: { children?: React.ReactNode }) 
     return <SolutionsContext.Provider value={{
         sols,
         areaCalculation,
-        setErrorMessage,
+        updateErrorMessage,
         errorMessage,
         area,
         operation,
-        setSelectedSolIndx,
-        selectedSol,
+        updateSolIndx,
         selectedSolIndx,
         addSolution
     }}>
