@@ -11,6 +11,5 @@ export default function Navbar() {
             errorMessage && <span>&#9888;{errorMessage}</span>
 
         }
-
     </div>
 }
